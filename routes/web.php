@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -14,7 +16,15 @@ use Inertia\Inertia;
 |
 */
 
-Route::get("/",function () {
-   return Inertia::render("Welcome");
+Route::middleware("auth")->group(function () {
+   Route::get("/",function () {
+      return Inertia::render("Welcome",["dataUser" => User::latest()->paginate(10)]);
+   });
+   Route::get("/logout",[AuthController::class,"logout"]);
 });
 
+Route::middleware("guest")->group(function () {
+   Route::get("/google",[AuthController::class,"store"]);
+   Route::get("/register",[AuthController::class,"google"]);
+   Route::get("/login",[AuthController::class,"index"])->name("login");
+});

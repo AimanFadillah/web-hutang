@@ -20,6 +20,10 @@ class AuthController extends Controller
     }
 
     public function verifikasi () {
+        if(auth()->user()->kelas != "" || auth()->user()->kelas != "" || auth()->user()->divisi != ""){
+            return redirect("/");
+        }
+
         return Inertia::render("verifikasi",[
             "name" => session("name"),
         ]);
@@ -30,10 +34,11 @@ class AuthController extends Controller
         $validatedData = $request->validate([
             "name" => "required|unique:users",
             "kelas" => "required|max:10",
-            "divisi" => "required|in:teknologi,desain",
+            "divisi" => "required|in:Teknologi,Desain",
         ],[
             "name.unique" => "Nama sudah digunakkan",
-            "kelas.max" => "Tidak boleh lebih dari 10 baris"
+            "kelas.max" => "Tidak boleh lebih dari 10 baris",
+            "divisi.required" => "Pilih antara Teknologi dan Desain"
         ]);
 
         User::where("id",auth()->user()->id)->update($validatedData);
@@ -56,7 +61,7 @@ class AuthController extends Controller
             ]);
 
             auth()->login($newUser,true);
-            return redirect()->intended("/verifikasi")->with(["name" => $userGoogle["name"]]);
+            return redirect()->intended("/registrasi")->with(["name" => $userGoogle["name"]]);
         }
 
         return back();

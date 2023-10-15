@@ -19,14 +19,16 @@ use Inertia\Inertia;
 */
 
 Route::middleware("auth")->group(function () {
-   Route::get("/verifikasi",[AuthController::class,"verifikasi"]);
-   Route::post("/verifikasi",[AuthController::class,"update"]);
+   Route::get("/registrasi",[AuthController::class,"verifikasi"]);
+   Route::post("/registrasi",[AuthController::class,"update"]);
    Route::get("/logout",[AuthController::class,"logout"]);
    Route::middleware("verifikasi")->group(function () {
       Route::get("/",function () {
-         return Inertia::render("Welcome",["dataUser" => User::latest()->paginate(10)]);
+         return Inertia::render("Welcome");
       });
-      Route::get("/orang",[OrangController::class,"index"]);
+      Route::get("/anggota",[OrangController::class,"index"]);
+      Route::post("/anggota/{User:id}/edit",[OrangController::class,"show"]);
+      Route::post("/anggota/{User:id}/delete",[OrangController::class,"destroy"]);
    });
 });
 

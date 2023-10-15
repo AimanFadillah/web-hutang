@@ -16,8 +16,8 @@ class VerifikasiMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if(auth()->user()->kelas == "" || auth()->user()->divisi == ""){
-            return redirect("/verifikasi");
+        if(auth()->user()->name == "" || auth()->user()->kelas == "" || auth()->user()->divisi == ""){
+            return redirect("/registrasi");
         }
 
         return $next($request);

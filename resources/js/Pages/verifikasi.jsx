@@ -15,14 +15,14 @@ export default function Verifikasi (props) {
 
     function kirimData (e) {
         e.preventDefault()
-        post("/verifikasi")
+        post("/registrasi")
     }
 
     return <>
-        <Head title="Verifikasi" ></Head>
+        <Head title="Registrasi" ></Head>
         <Sidebar>
                     <form onSubmit={kirimData} >
-                        <h1 className="fs-1 text-center mb-3 text-dark" >Verifikasi</h1>
+                        <h1 className="fs-1 text-center mb-3 text-dark" >Registrasi</h1>
                         <div className="mb-4">
                             <label htmlFor="name" className="text-dark form-label ">Nama</label>
                             <input type="text" className={`form-control ${errors.name ? "is-invalid" : ""}`} required value={data.name} onChange={aturData}  id="name" name="name" placeholder="Masukkan nama"></input>
@@ -38,13 +38,16 @@ export default function Verifikasi (props) {
                             </div>
                         </div>
                         <label htmlFor="divisi" className="text-dark form-label ">Divisi</label>
-                        <select className="form-select" required name="divisi" onChange={aturData} >
+                        <select className={`form-control ${errors.divisi ? "is-invalid" : ""}`} required name="divisi" onChange={aturData} >
                             <option className="text-dark" value="">Pilih Divisi</option>
-                            <option className="text-dark" value="desain">Desain</option>
-                            <option className="text-dark" value="teknologi">Teknologi</option>
+                            <option className="text-dark" value="Desain">Desain</option>
+                            <option className="text-dark" value="Teknologi">Teknologi</option>
                         </select>
+                        <div className={`invalid-feedback ${errors.divisi ? "" : "d-none"} `}>
+                            {errors.divisi}
+                        </div>
                         <div className="justify-content-center">
-                            <button type="submit" className="btn btn-success mt-4 px-4" >Kirim</button>
+                            <button type="submit" className="btn text-light mt-4 px-4" style={{ backgroundColor:"#3568FF" }} >Kirim</button>
                         </div>
                     </form>
         </Sidebar>

@@ -21,19 +21,19 @@
             }
 
             .text-dasar{
-                color:#610C9F
+                color:#3568FF
             }
 
             .text-dasar-cerah {
-                color: #940B92
+                color: #638AF9
             }
 
             .bg-dasar{
-                background-color: #610C9F
+                background-color: #3568FF
             }
 
             .bg-dasar-cerah {
-                background-color: #940B92
+                background-color: #638AF9
             }
 
             .bi {

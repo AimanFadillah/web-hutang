@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\OrangController;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -17,11 +19,17 @@ use Inertia\Inertia;
 */
 
 Route::middleware("auth")->group(function () {
-   Route::get("/",function () {
-      return Inertia::render("Welcome",["dataUser" => User::latest()->paginate(10)]);
-   });
+   Route::get("/verifikasi",[AuthController::class,"verifikasi"]);
+   Route::post("/verifikasi",[AuthController::class,"update"]);
    Route::get("/logout",[AuthController::class,"logout"]);
+   Route::middleware("verifikasi")->group(function () {
+      Route::get("/",function () {
+         return Inertia::render("Welcome",["dataUser" => User::latest()->paginate(10)]);
+      });
+      Route::get("/orang",[OrangController::class,"index"]);
+   });
 });
+
 
 Route::middleware("guest")->group(function () {
    Route::get("/google",[AuthController::class,"store"]);

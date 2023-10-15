@@ -8,8 +8,8 @@ export default function Login() {
             <Head title="Login" ></Head>
             <Column size="6" className="d-flex justify-content-center align-items-center">
                 <div className="" >
-                    <h1 className="fw-bold text-center fs-1 text-dasar " >Selamat Datang di Website</h1>
-                    <p className="d-md-block d-none text-center text-dasar" >Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum quaerat sint consequatur voluptas amet eius non quas a possimus voluptatibus.</p>
+                    <h1 className="fw-bold text-center fs-1 text-dark " >Selamat Datang di Website</h1>
+                    <p className="d-md-block d-none text-center text-dark" >Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum quaerat sint consequatur voluptas amet eius non quas a possimus voluptatibus.</p>
                 </div>
             </Column>
             <Column size="6" >
@@ -19,7 +19,7 @@ export default function Login() {
                         <div className="border d-flex bg-light mb-1 mx-1 rounded justify-content-between" >
                             <img src="/img/google.png" className=" img-fluid" width={40} alt="" />
                             <div className="text-center rounded-end d-flex align-items-center text-dark justify-content-center" style={{ width:"100%" }} >
-                                <h1 className="mt-2 fw-bold fs-5 text-dasar" >Masuk dengan Google</h1>
+                                <h1 className="mt-2 fw-bold fs-5 text-dark" >Masuk dengan Google</h1>
                             </div>
                         </div>
                     </a>

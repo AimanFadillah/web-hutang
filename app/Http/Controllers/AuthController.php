@@ -19,6 +19,28 @@ class AuthController extends Controller
         return Socialite::driver("google")->redirect();
     }
 
+    public function verifikasi () {
+        return Inertia::render("verifikasi",[
+            "name" => session("name"),
+        ]);
+    }
+
+    public function update (Request $request) {
+
+        $validatedData = $request->validate([
+            "name" => "required|unique:users",
+            "kelas" => "required|max:10",
+            "divisi" => "required|in:teknologi,desain",
+        ],[
+            "name.unique" => "Nama sudah digunakkan",
+            "kelas.max" => "Tidak boleh lebih dari 10 baris"
+        ]);
+
+        User::where("id",auth()->user()->id)->update($validatedData);
+
+        return redirect("/");
+    }
+
     public function store (Request $request){
         $userGoogle = Socialite::driver('google')->user();
     
@@ -29,14 +51,12 @@ class AuthController extends Controller
             return redirect()->intended("/");
         }else{
             $newUser = User::create([
-                "name" => $userGoogle["name"],
                 "email" => $userGoogle["email"],
-                "password" => bcrypt(bin2hex(random_bytes(15))) ,
-                "is_admin" => 0
+                "password" => bcrypt(bin2hex(random_bytes(15))),
             ]);
 
             auth()->login($newUser,true);
-            return redirect()->intended("/");
+            return redirect()->intended("/verifikasi")->with(["name" => $userGoogle["name"]]);
         }
 
         return back();

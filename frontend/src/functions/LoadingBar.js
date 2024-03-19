@@ -3,7 +3,7 @@ import Alert from "./Alert";
 export function loadingBarStart() {
     const loading = document.getElementById("loading-bar");
     let persen = 0
-    let interval = setInterval(Prosesloading, 500)
+    let interval = setInterval(Prosesloading,500)
     loading.style.width = `${persen}%`;
     loading.style.display = "block"
     function Prosesloading() {

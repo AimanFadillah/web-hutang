@@ -3,11 +3,12 @@ const cookieParser = require("cookie-parser");
 const Route = require("./route.js");
 const cors = require("cors");
 const fileUpload = require("express-fileupload");
-const dotenv = require("dotenv");
 const db = require("./Database/config.js");
+const dotenv = require("dotenv");
+const pg = require("pg");
+const pgHstore = require("pg-hstore");
 
 const app = express();
-dotenv.config();
 
 db.sync();
 

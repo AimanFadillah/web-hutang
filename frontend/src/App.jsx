@@ -9,9 +9,12 @@ import LoadingBar from "./components/LoadingBar.jsx";
 
 export default function App () {
   const [user,setUser] = useState(true);
+  const [search,setSearch] = useState(false);
   const userFunction = new UserFunction(user,setUser);
 
   const globalVariabel = {
+    search,
+    setSearch,
     checkStatus:userFunction.checkStatus,
   }
 

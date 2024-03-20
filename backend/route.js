@@ -10,7 +10,7 @@ const allowIp = [
 
 Route.get("/ipadress", (req, res) => {
     const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress
-    return res.send(`${req.ip} + ${ip} + ${req.hostname}`)
+    return res.send(`${req.ip} + ${ip} + ${req.hostname} + ${req.connection.remoteAddress}`)
 })
 
 Route.use((req, res, next) => {

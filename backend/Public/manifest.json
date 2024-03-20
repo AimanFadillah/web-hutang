@@ -2,7 +2,7 @@
     "name": "Hutang",
     "short_name": "Hutang",
     "start_url": ".",
-    "display": "fullscreen",
+    "display": "standalone",
     "background_color": "#ffff",
     "description": "Web mengelolah hutang",
     "icons": [

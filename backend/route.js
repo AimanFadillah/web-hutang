@@ -9,12 +9,12 @@ const allowIp = [
 ];
 
 Route.get("/ipadress", (req, res) => {
-    const ip = req.socket.remoteAddress
+    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress 
     return res.send(ip)
 })
 
 routeGroup(Route, function (req, res, next) {
-    const ip = req.socket.remoteAddress;
+    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress ;
     const check = allowIp.includes(ip);
     if (!check) {
         return res.send("Wkwkwkw Gk bisa masuk yahhh")

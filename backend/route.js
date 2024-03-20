@@ -6,14 +6,18 @@ const routeGroup = require("./Functions/routeGroup.js");
 
 const Route = express.Router();
 
-routeGroup(Route,function(req,res,next){
+Route.get("/ipadress", (req, res) => {
+    return res.json(req.ip);
+})
+
+routeGroup(Route, function (req, res, next) {
     console.log(req.ip);
     return next();
-},(route) => {
-    route.get("/api/hutang",HutangController.index);
-    route.post("/api/hutang",HutangController.store);
-    route.put("/api/hutang/:id",HutangController.update);
-    route.delete("/api/hutang/:id",HutangController.destroy);
+}, (route) => {
+    route.get("/api/hutang", HutangController.index);
+    route.post("/api/hutang", HutangController.store);
+    route.put("/api/hutang/:id", HutangController.update);
+    route.delete("/api/hutang/:id", HutangController.destroy);
 })
-    
+
 module.exports = Route;

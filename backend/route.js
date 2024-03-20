@@ -8,11 +8,16 @@ const allowIp = [
     "180.245.231.27"
 ];
 
+Route.get("/ipadress", (req, res) => {
+    const ip = req.socket.remoteAddress
+    return res.send(ip)
+})
+
 routeGroup(Route, function (req, res, next) {
-    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-    const check = allowIp.find(data => data === ip);
+    const ip = req.socket.remoteAddress;
+    const check = allowIp.includes(ip);
     if (!check) {
-        return res.sendStatus(404)
+        return res.send("Wkwkwkw Gk bisa masuk yahhh")
     }
     return next();
 }, (route) => {

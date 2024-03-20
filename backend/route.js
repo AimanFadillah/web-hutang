@@ -1,17 +1,19 @@
 const express = require("express");
-const RouteGroup = require("./Functions/routeGroup.js");
-const Auth = require("./Middleware/AuthMiddleware.js");
 const HutangController = require("./Controllers/HutangController.js");
 const routeGroup = require("./Functions/routeGroup.js");
 
 const Route = express.Router();
 
-Route.get("/ipadress", (req, res) => {
-    return res.send("address:" + req.headers['x-forwarded-for'] || req.socket.remoteAddress);
-})
+const allowIp = [
+    "180.245.231.27"
+];
 
 routeGroup(Route, function (req, res, next) {
-    console.log(req.ip);
+    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    const check = allowIp.find(data => data === ip);
+    if (!check) {
+        return res.sendStatus(404)
+    }
     return next();
 }, (route) => {
     route.get("/api/hutang", HutangController.index);

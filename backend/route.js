@@ -9,22 +9,22 @@ const allowIp = [
 ];
 
 Route.get("/ipadress", (req, res) => {
-    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress 
-    return res.send(ip)
+    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress
+    return res.send(`${req.ip} + ${ip} + ${req.hostname}`)
 })
 
-routeGroup(Route, function (req, res, next) {
-    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress ;
+Route.use((req, res, next) => {
+    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
     const check = allowIp.includes(ip);
     if (!check) {
         return res.send("Wkwkwkw Gk bisa masuk yahhh")
     }
     return next();
-}, (route) => {
-    route.get("/api/hutang", HutangController.index);
-    route.post("/api/hutang", HutangController.store);
-    route.put("/api/hutang/:id", HutangController.update);
-    route.delete("/api/hutang/:id", HutangController.destroy);
 })
+
+Route.get("/api/hutang", HutangController.index);
+Route.post("/api/hutang", HutangController.store);
+Route.put("/api/hutang/:id", HutangController.update);
+Route.delete("/api/hutang/:id", HutangController.destroy);
 
 module.exports = Route;

@@ -7,7 +7,7 @@ const routeGroup = require("./Functions/routeGroup.js");
 const Route = express.Router();
 
 Route.get("/ipadress", (req, res) => {
-    return res.json(req.ip);
+    return res.send("address:" + req.headers['x-forwarded-for'] || req.socket.remoteAddress);
 })
 
 routeGroup(Route, function (req, res, next) {

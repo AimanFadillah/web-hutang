@@ -17,11 +17,11 @@ export default function Utama () {
         !hutangs ? getHutangs() : undefined
     },[]);
 
-    const getHutangs = useCallback(async () => {
+    const getHutangs = useCallback(async (reset) => {
         try{
-            const response = await ConfigAxios.get(`/api/hutang?search=${search}&page=${page}`);
-            hutangs ? setHutangs([...hutangs,...response.data.data]) : setHutangs(response.data.data);
-            setPage(page + 1);
+            const response = await ConfigAxios.get(`/api/hutang?search=${search}&page=${reset ? 1 : page}`);
+            hutangs && !reset ? setHutangs([...hutangs,...response.data.data]) : setHutangs(response.data.data);
+            !reset ? setPage(page + 1) : setPage(2);
         }catch(e){
             checkStatus(e);
         }
@@ -56,7 +56,7 @@ export default function Utama () {
                 <Col className="p-0" >
                     <form className="" onSubmit={(e) => {
                         e.preventDefault();
-                        getHutangs();
+                        getHutangs(true);
                     }} >
                         <div className="input-group mb-2">
                             <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} name="search" className="form-control" placeholder="Masukkan nama"/>

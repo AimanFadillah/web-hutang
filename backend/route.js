@@ -14,11 +14,11 @@ Route.get("/ipadress", (req, res) => {
 })
 
 Route.use((req, res, next) => {
-    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-    const check = allowIp.includes(ip);
-    if (!check) {
-        return res.send("Wkwkwkw Gk bisa masuk yahhh")
-    }
+    // const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    // const check = allowIp.includes(ip);
+    // if (!check) {
+    //     return res.send("Wkwkwkw Gk bisa masuk yahhh")
+    // }
     return next();
 })
 

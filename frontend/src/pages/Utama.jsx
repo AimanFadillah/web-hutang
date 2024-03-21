@@ -1,59 +1,31 @@
 import Navbar from "../components/Navbar";
 import { Col, Container, Row } from "../components/Grid";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect } from "react";
+import InfiniteScroll from "react-infinite-scroll-component"
 import DataContext from "../variabels/Context";
 import Modal from "../components/Modal";
-import Input from "../components/Input";
 import Loading from "../components/Loading";
 import ConfigAxios from "../variabels/ConfigAxios";
 import CloseModal from "../functions/CloseModal";
+import { useNavigate } from "react-router-dom";
 
 export default function Utama () {
-    const {checkStatus} = useContext(DataContext);
-    const [hutangs,setHutangs] = useState();
-    const [hutang,setHutang] = useState({});
-    const {search,setSearch} = useContext(DataContext)
+    const {checkStatus,hutangs,setHutangs,searchToggle,search,setSearch,hutang,setHutang,page,setPage} = useContext(DataContext);
+    const nav = useNavigate();
 
     useEffect(() => {
-        getHutangs()
+        !hutangs ? getHutangs() : undefined
     },[]);
 
     const getHutangs = useCallback(async () => {
         try{
-            const response = await ConfigAxios.get("/api/hutang");
-            setHutangs(response.data.data);
+            const response = await ConfigAxios.get(`/api/hutang?search=${search}&page=${page}`);
+            hutangs ? setHutangs([...hutangs,...response.data.data]) : setHutangs(response.data.data);
+            setPage(page + 1);
         }catch(e){
             checkStatus(e);
         }
-    },[]);
-        
-    const createHutang = useCallback(async (e) => {
-        try{
-            e.preventDefault();
-            await ConfigAxios.post("/api/hutang",new FormData(e.target));
-            e.target.reset()
-            CloseModal("#buatHutang");
-            getHutangs();
-        }catch(e){
-            checkStatus(e);
-        }
-    },[]);
-
-    const updateHutang = useCallback(async (e) => {
-        try{
-            e.preventDefault();
-            const formData = new FormData(e.target)
-            await ConfigAxios.put(`/api/hutang/${hutang.id}`,formData);
-            const newData = hutangs.find((data) => data.id === hutang.id);
-            newData.nama = formData.get("nama")
-            newData.uang = parseInt(formData.get("uang"))
-            e.target.reset()
-            CloseModal("#ubahHutang");
-            setHutangs(hutangs.map((data) => data.id === hutang.id ? newData : data))
-        }catch(e){
-            checkStatus(e);
-        }
-    },[hutang]);
+    },[search,page,hutangs]);
 
     const deleteHutang = useCallback(async () => {
         try{
@@ -79,20 +51,28 @@ export default function Utama () {
 
     return <Navbar>
         <Container>
-            {search ? 
+            {searchToggle ? 
             <Row>
                 <Col className="p-0" >
-                    <div className="">
+                    <form className="" onSubmit={(e) => {
+                        e.preventDefault();
+                        getHutangs();
+                    }} >
                         <div className="input-group mb-2">
-                            <input type="text" className="form-control" placeholder="Masukkan nama"/>
-                            <button className="btn btn-primary" type="button"><i className="bi bi-search"></i></button>
+                            <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} name="search" className="form-control" placeholder="Masukkan nama"/>
+                            <button  className="btn btn-primary"><i className="bi bi-search"></i></button>
                         </div>
-                    </div>
+                    </form>
                 </Col>
             </Row>
             : undefined}
             {hutangs ? hutangs.length > 0 ?  
-            <Row className="mb-5" >
+            <InfiniteScroll 
+                className="mb-5" 
+                hasMore={true}
+                next={getHutangs}
+                dataLength={hutangs.length}
+            >
                 {hutangs.map((hutang,index) => 
                 <Col className="p-0 mb-3" key={index} >
                     <div className="border rounded p-2 shadow-sm">
@@ -103,7 +83,10 @@ export default function Utama () {
                                     <i className="fs-5 bi bi-three-dots-vertical"></i>
                                 </div>
                                 <ul className="dropdown-menu">
-                                    <li onClick={() => setHutang(hutang)} ><div data-bs-toggle="modal" data-bs-target="#ubahHutang" className="dropdown-item fw-bold" href="#"><i className="bi bi-pencil-square"></i> Edit</div></li>
+                                    <li onClick={() => {
+                                        setHutang(hutang)
+                                        nav(`/hutang/${hutang.id}`)
+                                    }} ><div className="dropdown-item fw-bold" href="#"><i className="bi bi-pencil-square"></i> Edit</div></li>
                                     <li onClick={() => setHutang(hutang)} ><div data-bs-toggle="modal" data-bs-target="#hapusHutang" className="dropdown-item text-danger fw-bold" href="#"><i className="bi bi-trash"></i> Hapus</div></li>
                                 </ul>
                             </div>
@@ -115,7 +98,7 @@ export default function Utama () {
                     </div>
                 </Col>
                 )}
-            </Row>
+            </InfiniteScroll>
             : <Row>
                 <Col>
                     <div className="">
@@ -127,34 +110,12 @@ export default function Utama () {
             : <Loading/>}
         </Container>
         <div className="d-flex fixed-bottom p-3 justify-content-end">
-            <div className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#buatHutang"><i className="bi bi-plus-lg"></i> Tambah</div>
+            <div className="btn btn-primary" onClick={() => nav("/hutang")} ><i className="bi bi-plus-lg"></i> Tambah</div>
         </div>
-        <Modal target={"buatHutang"} >
-                 <form onSubmit={createHutang}>
-                    <div className="mb-3">
-                        <Input type="text" required={true}  name="nama" />
-                    </div>
-                    <div className="mb-3">
-                        <Input type="number" required={true}  name="uang" />
-                    </div>
-                    <button className="text-center btn btn-primary mt-2 shadow w-100" >Tambah</button>
-                </form>
-        </Modal>
-        <Modal target={"ubahHutang"} >
-                 <form onSubmit={updateHutang}>
-                    <div className="mb-3">
-                        <Input type="text" required={true} value={hutang.nama} name="nama" />
-                    </div>
-                    <div className="mb-3">
-                        <Input type="number" required={true} value={hutang.uang} name="uang" />
-                    </div>
-                    <button className="text-center btn btn-primary mt-2 shadow w-100" >Ubah</button>
-                </form>
-        </Modal>
         <Modal target={"hapusHutang"} >
             <h5 className="text-primary fw-bold text-center" >Yakin ingin Menghapusnya?</h5>
-            <div className="d-flex justify-content-center my-4">
-                <img src="/img/trash.png" alt="logoSampah" className="img-fluid" style={{width:"110px"}} />
+            <div className="d-flex justify-content-center">
+                <img src="/img/trash.png" alt="logoSampah" className="img-fluid"  />
             </div>
             <div className="d-flex gap-1">
                 <button data-bs-dismiss="modal" className="text-center btn btn-danger mt-2 shadow w-50" >Batal</button>

@@ -6,15 +6,30 @@ import Middleware from "./components/Midleware.jsx"
 import UserFunction from "./functions/UserFuntion.js";
 import Utama from "./pages/Utama.jsx";
 import LoadingBar from "./components/LoadingBar.jsx";
+import CreateHutang from "./pages/Create.jsx";
+import EditHutang from "./pages/Edit.jsx";
 
 export default function App () {
   const [user,setUser] = useState(true);
-  const [search,setSearch] = useState(false);
+  const [searchToggle,setSearchToggle] = useState(false);
+  const [search,setSearch] = useState("");
+  const [hutangs,setHutangs] = useState();
+  const [hutang,setHutang] = useState({});
+  const [page,setPage] = useState(1);
+
   const userFunction = new UserFunction(user,setUser);
 
   const globalVariabel = {
     search,
     setSearch,
+    searchToggle,
+    setSearchToggle,
+    hutangs,
+    setHutangs,
+    hutang,
+    setHutang,
+    page,
+    setPage,
     checkStatus:userFunction.checkStatus,
   }
 
@@ -24,6 +39,8 @@ export default function App () {
 
       <Middleware next={user} >
         <Route path="/" element={<Utama />} />
+        <Route path="/hutang" element={<CreateHutang />} />
+        <Route path="/hutang/:id" element={<EditHutang />} />
         <Route path="*" element={<Page404 />} />
       </Middleware>
 

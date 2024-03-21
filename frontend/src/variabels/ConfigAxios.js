@@ -1,7 +1,7 @@
 import axios from "axios";
 import { loadingBarFinish, loadingBarStart } from "../functions/LoadingBar";
 
-const ConfigAxios = axios.create({ withCredentials: true, baseURL: `https://web-hutang.vercel.app/` })
+const ConfigAxios = axios.create({ withCredentials: true})
 
 ConfigAxios.interceptors.request.use(request => {
     loadingBarStart()

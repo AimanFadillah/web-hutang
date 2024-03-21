@@ -1,5 +1,5 @@
 import { BrowserRouter, Route } from "react-router-dom"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import Page404 from "./pages/404";
 import DataContext from "./variabels/Context.js"
 import Middleware from "./components/Midleware.jsx"

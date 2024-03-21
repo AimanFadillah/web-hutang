@@ -114,9 +114,6 @@ export default function Utama () {
         </div>
         <Modal target={"hapusHutang"} >
             <h5 className="text-primary fw-bold text-center" >Yakin ingin Menghapusnya?</h5>
-            <div className="d-flex justify-content-center">
-                <img src="/img/trash.png" alt="logoSampah" className="img-fluid"  />
-            </div>
             <div className="d-flex gap-1">
                 <button data-bs-dismiss="modal" className="text-center btn btn-danger mt-2 shadow w-50" >Batal</button>
                 <button className="text-center btn btn-primary mt-2 shadow w-50" onClick={deleteHutang} >Hapus</button>

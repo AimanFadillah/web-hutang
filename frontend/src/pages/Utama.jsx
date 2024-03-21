@@ -68,7 +68,7 @@ export default function Utama () {
             : undefined}
             {hutangs ? hutangs.length > 0 ?  
             <InfiniteScroll 
-                className="mb-5" 
+                className="mb-5 row" 
                 hasMore={true}
                 next={getHutangs}
                 dataLength={hutangs.length}

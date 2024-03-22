@@ -13,6 +13,11 @@ Route.get("/ipadress", (req, res) => {
     return res.send(`${req.ip} + ${ip} + ${req.hostname} + ${req.headers['user-agent']}`)
 })
 
+Route.get("/ipserver", async (req, res) => {
+    const response = await fetch("https://web-hutang.vercel.app/ipadress");
+    return res.send(`${await response.text()}`);
+})
+
 Route.use((req, res, next) => {
     const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
     const check = allowIp.includes(ip);

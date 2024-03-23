@@ -28,7 +28,6 @@ Route.use((req, res, next) => {
     const check = allowIp.includes(ip);
     if (!check) {
         return res.send("<h1>Maaf Kamu tidak di izinkan Masuk😋</h1>")
-    }else{
     }
     return next();
 })

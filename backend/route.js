@@ -1,7 +1,6 @@
 const express = require("express");
 const HutangController = require("./Controllers/HutangController.js");
 const routeGroup = require("./Functions/routeGroup.js");
-const geoip = require('geoip-lite');
 
 const Route = express.Router();
 

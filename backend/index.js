@@ -7,7 +7,6 @@ const db = require("./Database/config.js");
 const dotenv = require("dotenv");
 const pg = require("pg");
 const pgHstore = require("pg-hstore");
-const geoip = require('geoip-lite');
 
 const app = express();
 

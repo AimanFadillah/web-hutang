@@ -21,10 +21,6 @@ Route.get("/ipserver", async (req, res) => {
 
 Route.use((req, res, next) => {
     const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-    const geo = geoip.lookup(ip)
-    if(geo && geo.country !== "ID"){
-        return res.send("<h1>Kamu pasti web scraping 😍</h1>")
-    }
     const check = allowIp.includes(ip);
     if (!check) {
         return res.send("<h1>Maaf Kamu tidak di izinkan Masuk😋</h1>")

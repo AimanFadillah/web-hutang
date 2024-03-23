@@ -24,14 +24,13 @@ Route.use((req, res, next) => {
     const geo = geoip.lookup(ip)
     if(geo && geo.country !== "ID"){
         return res.send("<h1>Kamu pasti web scraping 😍</h1>")
-    } else {
-        const check = allowIp.includes(ip);
-        if (!check) {
-            return res.send("<h1>Maaf Kamu tidak di izinkan Masuk😋</h1>")
-        }else{
-            return next();
-        }
     }
+    const check = allowIp.includes(ip);
+    if (!check) {
+        return res.send("<h1>Maaf Kamu tidak di izinkan Masuk😋</h1>")
+    }else{
+    }
+    return next();
 })
 
 Route.get("/api/hutang", HutangController.index);

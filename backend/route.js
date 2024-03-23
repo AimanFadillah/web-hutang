@@ -1,6 +1,7 @@
 const express = require("express");
 const HutangController = require("./Controllers/HutangController.js");
 const routeGroup = require("./Functions/routeGroup.js");
+const geoip = require('geoip-lite');
 
 const Route = express.Router();
 
@@ -20,11 +21,17 @@ Route.get("/ipserver", async (req, res) => {
 
 Route.use((req, res, next) => {
     const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-    const check = allowIp.includes(ip);
-    if (!check) {
-        return res.send("Wkwkwkw Gk bisa masuk yahhh")
+    const geo = geoip.lookup(ip)
+    if(geo && geo.country !== "ID"){
+        return res.send("<h1>Kamu pasti web scraping 😍</h1>")
+    } else {
+        const check = allowIp.includes(ip);
+        if (!check) {
+            return res.send("<h1>Maaf Kamu tidak di izinkan Masuk😋</h1>")
+        }else{
+            return next();
+        }
     }
-    return next();
 })
 
 Route.get("/api/hutang", HutangController.index);
